@@ -128,30 +128,30 @@ public class textGen {
     
         if (inputArray.length == 0) return;
     
-        String currentWord = inputArray[0];
-        sentences.add(currentWord);
-    
-        for (int i = 0; i < steps; i++) {
-            ArrayList<String> nextWords = getNextWords(currentWord);
-    
-            if (nextWords == null || nextWords.isEmpty()) break;
-    
-            // Filter out words already used to avoid repetition
-            ArrayList<String> filteredNextWords = new ArrayList<>(nextWords);
-            filteredNextWords.removeAll(sentences);
-    
-            // If all next words were already used, fall back to original list
-            if (filteredNextWords.isEmpty()) {
-                filteredNextWords = nextWords;
+        for(int i = 0; i < inputArray.length; i++) {
+            String currentWord = inputArray[i];
+            sentences.add(currentWord);
+            for (int j = 0; j < steps; j++) {
+                ArrayList<String> nextWords = getNextWords(currentWord);
+        
+                if (nextWords == null || nextWords.isEmpty()) break;
+        
+                // Filter out words already used to avoid repetition
+                ArrayList<String> filteredNextWords = new ArrayList<>(nextWords);
+                filteredNextWords.removeAll(sentences);
+        
+                // If all next words were already used, fall back to original list
+                if (filteredNextWords.isEmpty()) {
+                    filteredNextWords = nextWords;
+                }
+        
+                int randomIndex = (int) (Math.random() * filteredNextWords.size());
+                String nextWord = filteredNextWords.get(randomIndex);
+        
+                sentences.add(nextWord);
+                currentWord = nextWord;
             }
-    
-            int randomIndex = (int) (Math.random() * filteredNextWords.size());
-            String nextWord = filteredNextWords.get(randomIndex);
-    
-            sentences.add(nextWord);
-            currentWord = nextWord;
         }
-    
         System.out.println("Generated Text:");
         System.out.println(String.join(" ", sentences));
     }
@@ -160,7 +160,7 @@ public class textGen {
     public static void main(String[] args) {
         textGen test = new textGen();
         test.loop(); // Build the wordPairs map
-        test.generateText("How are you", 10);
+        test.generateText("hows the weather", 10);
     }
 
 }
